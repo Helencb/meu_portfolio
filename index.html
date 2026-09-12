@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap">
+<style>
+  :root {
+    --bg: #0c0f14; --bg2: #0f141c; --bg3: #11161f;
+    --surface: #161b23; --surface2: #11151c; --surface3: #1c222c;
+    --line: #262c37; --line2: #2b323e; --line3: #3a4453;
+    --accent: #2fe0c4; --accent-hi: #7af0dd; --ring: #2a5f57; --on-accent: #06231d;
+    --ink: #f2f4f7; --ink2: #c3cad6; --ink3: #b7bfcc; --ink4: #a9b2c0;
+    --muted: #9aa3b2; --muted2: #6d7684;
+    --header-bg: rgba(12,15,20,.88); --shadow: rgba(0,0,0,.45); --chip: rgba(255,255,255,.07);
+    --glow-a: rgba(47,224,196,.16); --glow-b: rgba(47,224,196,.05);
+    --glow-c: rgba(47,224,196,.11); --glow-d: rgba(47,224,196,.3); --blend: screen;
+    --code-key: #7aa2f7; --code-str: #2fe0c4; --code-num: #e0af68;
+  }
+  [data-theme="light"] {
+    --bg: #f4f6f7; --bg2: #edf1f2; --bg3: #e6ebed;
+    --surface: #ffffff; --surface2: #f8fafb; --surface3: #eef2f4;
+    --line: #d3dade; --line2: #c6ced4; --line3: #aab4bc;
+    --accent: #0c7565; --accent-hi: #095c50; --ring: #a5d9ce; --on-accent: #ffffff;
+    --ink: #14181d; --ink2: #2b333b; --ink3: #39424b; --ink4: #4a545e;
+    --muted: #5a656f; --muted2: #8b949c;
+    --header-bg: rgba(244,246,247,.9); --shadow: rgba(20,32,42,.14); --chip: rgba(12,117,101,.1);
+    --glow-a: rgba(12,117,101,.16); --glow-b: rgba(12,117,101,.05);
+    --glow-c: rgba(12,117,101,.1); --glow-d: rgba(12,117,101,.28); --blend: multiply;
+    --code-key: #2f5fd0; --code-str: #0c7565; --code-num: #9a6208;
+  }
+  html { scroll-behavior: smooth; overflow-x: clip; }
+  body { overflow-x: clip; max-width: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: Archivo, system-ui, sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hi); }
+  *:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  ::selection { background: var(--accent); color: var(--on-accent); }
+  input, textarea, button { font-family: inherit; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } html { scroll-behavior: auto; } }
+</style>
+</helmet>
+
+<a href="#home" style="position:fixed; top:8px; left:8px; z-index:300; padding:10px 16px; background:var(--accent); color:var(--on-accent); font-weight:700; font-size:14px; transform:translateY(-200%); transition:transform .2s ease" style-focus="transform:translateY(0)">{{ t.skip }}</a>
+
+<div aria-hidden="true" style="{{ glowStyle }}"></div>
+
+<div aria-hidden="true" style="position:fixed; left:0; top:0; z-index:140; height:3px; background:var(--accent); box-shadow:0 0 12px var(--glow-d); transition:width .08s linear; width:{{ progress }}"></div>
+
+<header style="position:sticky; top:0; z-index:100; background:var(--header-bg); backdrop-filter:blur(10px); border-bottom:1px solid var(--line)">
+  <div style="max-width:1100px; margin:0 auto; padding:14px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px">
+    <span style="font-weight:800; font-size:18px; letter-spacing:-.01em">Helen<span style="color:var(--accent)">.</span></span>
+    <nav aria-label="{{ t.navLabel }}" style="display:flex; flex-wrap:wrap; gap:8px 22px; font-size:14.5px; font-weight:500; flex:1 1 200px; min-width:0">
+      <a href="#home" style="{{ navHomeStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navHome }}</a>
+      <a href="#projetos" style="{{ navWorkStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navWork }}</a>
+      <a href="#arquitetura" style="{{ navArqStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navArq }}</a>
+      <a href="#sobre" style="{{ navAboutStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navAbout }}</a>
+      <a href="#contato" style="{{ navContactStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navContact }}</a>
+    </nav>
+    <button type="button" onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:50%; border:1px solid var(--line); background:none; color:var(--ink2); cursor:pointer; transition:border-color .18s ease, color .18s ease" style-hover="border-color:var(--accent); color:var(--accent)">
+      <sc-if value="{{ isDark }}" hint-placeholder-val="{{ true }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+      </sc-if>
+      <sc-if value="{{ isLight }}" hint-placeholder-val="{{ false }}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+      </sc-if>
+    </button>
+    <div role="group" aria-label="{{ t.langLabel }}" style="display:flex; border:1px solid var(--line); border-radius:999px; overflow:hidden">
+      <button type="button" onClick="{{ setPt }}" aria-pressed="{{ isPt }}" style="{{ ptStyle }}">PT</button>
+      <button type="button" onClick="{{ setEn }}" aria-pressed="{{ isEn }}" style="{{ enStyle }}">EN</button>
+    </div>
+    <a href="cv-helen-cristina-batista.pdf" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:999px; background:var(--accent); color:var(--on-accent); font-size:14px; font-weight:700; transition:transform .18s ease, box-shadow .18s ease" style-hover="transform:translateY(-2px); box-shadow:0 8px 20px var(--glow-d); color:var(--on-accent)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+      {{ t.cv }}
+    </a>
+  </div>
+</header>
+
+<main>
+<section id="home" style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(56px,8vw,96px) 24px clamp(40px,6vw,72px); text-align:center; min-height:calc(100svh - 74px); display:flex; flex-direction:column; justify-content:center">
+
+  <span style="display:block; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:18px; animation:fadeUp .6s ease both">{{ t.heroEyebrow }}</span>
+  <h1 style="font-size:clamp(32px,6vw,52px); font-weight:800; line-height:1.1; letter-spacing:-.02em; margin:0 0 18px; animation:fadeUp .6s ease both; animation-delay:.06s">{{ t.heroPre }} <span style="color:var(--accent); white-space:nowrap">{{ typedName }}<span aria-hidden="true" style="display:inline-block; width:3px; height:.9em; margin-left:5px; background:var(--accent); vertical-align:-.08em; animation:caret 1s step-end infinite"></span></span></h1>
+  <p style="max-width:56ch; margin:0 auto; color:var(--ink2); font-size:17px; text-wrap:pretty; animation:fadeUp .6s ease both; animation-delay:.12s">{{ t.heroBody }}</p>
+  <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px 18px; margin-top:26px; font-size:13.5px; color:var(--muted); animation:fadeUp .6s ease both; animation-delay:.15s">
+    <span style="display:inline-flex; align-items:center; gap:7px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+      Assis, SP · Brasil
+    </span>
+    <span style="display:inline-flex; align-items:center; gap:7px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path><path d="M2 10l10-5 10 5-10 5z"></path></svg>
+      ADS · UNIMAR
+    </span>
+    <span style="display:inline-flex; align-items:center; gap:7px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2"></rect><rect width="20" height="8" x="2" y="14" rx="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
+      Java · Spring Boot
+    </span>
+  </div>
+  <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:14px; margin-top:28px; animation:fadeUp .6s ease both; animation-delay:.18s">
+    <a href="https://github.com/Helencb" target="_blank" rel="noopener" aria-label="GitHub" style="width:44px; height:44px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink2); transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-3px)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 2-2.64-.5-5.36-.5-8 0-2-2-3-2-3-2-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.6.6-.9 1.4-1 2.2v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/hcbatista/" target="_blank" rel="noopener" aria-label="LinkedIn" style="width:44px; height:44px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink2); transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-3px)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    </a>
+    <a href="mailto:h.c.batista2002@gmail.com" aria-label="E-mail" style="width:44px; height:44px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink2); transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-3px)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+    </a>
+  </div>
+</section>
+
+<section style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px; min-height:100svh; display:flex; flex-direction:column; justify-content:center">
+  <div aria-hidden="true" style="position:absolute; z-index:-1; top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%); background:var(--bg2); overflow:hidden">
+    <div style="position:absolute; inset:0; background:radial-gradient(75% 90% at 12% -10%, var(--glow-c), transparent 68%)"></div>
+    <svg width="100%" height="100%" style="display:block; opacity:.055; mask-image:linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent); -webkit-mask-image:linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent)"><defs><pattern id="pat-do" width="220" height="220" patternUnits="userSpaceOnUse"><g fill="none" style="stroke:var(--accent)" stroke-width="1.2"><rect x="30" y="36" width="58" height="22"></rect><rect x="30" y="66" width="58" height="22"></rect><circle cx="39" cy="47" r="1.6"></circle><circle cx="39" cy="77" r="1.6"></circle><path d="M140 160h44"></path><path d="M162 138v44"></path></g></pattern></defs><rect width="100%" height="100%" fill="url(#pat-do)"></rect></svg>
+  </div>
+  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.doEyebrow }}</span>
+  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.doTitle }} <span style="color:var(--accent)">{{ t.doTitleAccent }}</span></h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px">
+    <div style="background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:14px; padding:28px; transition:transform .26s cubic-bezier(.22,.61,.36,1), box-shadow .26s ease, background .22s ease, border-color .22s ease, color .22s ease; animation:fadeUp .6s ease both" style-hover="background:var(--accent); border-color:var(--accent); color:var(--on-accent); transform:translateY(-10px) scale(1.06); box-shadow:0 0 0 8px var(--bg2), 0 0 0 10px var(--ring), 0 22px 44px var(--shadow)">
+      <div style="width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:var(--chip); color:inherit; margin-bottom:20px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2"></rect><rect width="20" height="8" x="2" y="14" rx="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
+      </div>
+      <h3 style="font-weight:700; font-size:17px; margin:0 0 10px">{{ t.do1Title }}</h3>
+      <p style="font-size:14.5px; color:inherit; opacity:.72; margin:0">{{ t.do1Body }}</p>
+    </div>
+    <div style="background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:14px; padding:28px; transition:transform .26s cubic-bezier(.22,.61,.36,1), box-shadow .26s ease, background .22s ease, border-color .22s ease, color .22s ease; animation:fadeUp .6s ease both; animation-delay:.08s" style-hover="background:var(--accent); border-color:var(--accent); color:var(--on-accent); transform:translateY(-10px) scale(1.06); box-shadow:0 0 0 8px var(--bg2), 0 0 0 10px var(--ring), 0 22px 44px var(--shadow)">
+      <div style="width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:var(--chip); color:inherit; margin-bottom:20px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="6" height="6" x="16" y="16" rx="1"></rect><rect width="6" height="6" x="2" y="16" rx="1"></rect><rect width="6" height="6" x="9" y="2" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+      </div>
+      <h3 style="font-weight:700; font-size:17px; margin:0 0 10px">{{ t.do2Title }}</h3>
+      <p style="font-size:14.5px; color:inherit; opacity:.72; margin:0">{{ t.do2Body }}</p>
+    </div>
+    <div style="background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:14px; padding:28px; transition:transform .26s cubic-bezier(.22,.61,.36,1), box-shadow .26s ease, background .22s ease, border-color .22s ease, color .22s ease; animation:fadeUp .6s ease both; animation-delay:.16s" style-hover="background:var(--accent); border-color:var(--accent); color:var(--on-accent); transform:translateY(-10px) scale(1.06); box-shadow:0 0 0 8px var(--bg2), 0 0 0 10px var(--ring), 0 22px 44px var(--shadow)">
+      <div style="width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:var(--chip); color:inherit; margin-bottom:20px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+      </div>
+      <h3 style="font-weight:700; font-size:17px; margin:0 0 10px">{{ t.do3Title }}</h3>
+      <p style="font-size:14.5px; color:inherit; opacity:.72; margin:0">{{ t.do3Body }}</p>
+    </div>
+  </div>
+</section>
+
+<section id="projetos" style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px; min-height:100svh; display:flex; flex-direction:column; justify-content:center">
+
+  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.projEyebrow }}</span>
+  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.projTitle }} <span style="color:var(--accent)">{{ t.projTitleAccent }}</span></h2>
+  <sc-if value="{{ hasStats }}" hint-placeholder-val="{{ false }}">
+    <dl style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:1px; margin:0 0 26px; background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden">
+      <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+        <div style="padding:16px 18px; background:var(--surface); min-width:0">
+          <dt style="font-size:11.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin-bottom:6px">{{ st.label }}</dt>
+          <dd style="margin:0; font-family:'JetBrains Mono', monospace; font-size:19px; font-weight:600; color:var(--accent); word-break:break-word">{{ st.value }}</dd>
+        </div>
+      </sc-for>
+      <div style="padding:16px 18px; background:var(--surface); display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted2)">
+        <span style="width:7px; height:7px; border-radius:50%; background:var(--accent); flex-shrink:0"></span>
+        {{ t.liveGithub }}
+      </div>
+    </dl>
+  </sc-if>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px">
+    <sc-for list="{{ projects }}" as="p" hint-placeholder-count="2">
+      <article style="display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--line); border-radius:14px; overflow:hidden; transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease; animation:fadeUp .6s ease both" style-hover="transform:translateY(-5px); border-color:var(--ring); box-shadow:0 18px 36px var(--shadow)">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 24px; background:linear-gradient(160deg, var(--surface3), var(--surface2)); border-bottom:1px solid var(--line)">
+          <span style="display:flex; align-items:center; gap:10px; font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" x2="20" y1="19" y2="19"></line></svg>
+            {{ p.kicker }}
+          </span>
+          <span style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted)" title="{{ p.starsLabel }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            {{ p.stars }}
+            <span style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)">{{ p.starsLabel }}</span>
+          </span>
+        </div>
+        <div style="padding:26px 24px 24px; display:flex; flex-direction:column; flex:1">
+          <h3 style="font-family:'JetBrains Mono', monospace; font-size:20px; font-weight:600; margin:0 0 12px">{{ p.name }}</h3>
+          <p style="color:var(--ink4); font-size:14.5px; margin:0 0 16px; text-wrap:pretty">{{ p.desc }}</p>
+          <p style="display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:var(--accent); margin:0 0 20px; padding-left:12px; border-left:2px solid var(--ring)">{{ p.highlight }}</p>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin:auto 0 22px">
+            <sc-for list="{{ p.tags }}" as="tag" hint-placeholder-count="4">
+              <span style="font-size:12.5px; padding:5px 12px; border-radius:999px; border:1px solid var(--line2); background:var(--surface2); color:var(--ink3)">{{ tag }}</span>
+            </sc-for>
+          </div>
+          <a href="{{ p.url }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; font-size:14.5px; font-weight:600; color:var(--accent); align-self:flex-start; border-bottom:1px solid transparent; transition:border-color .18s ease" style-hover="border-color:var(--accent); color:var(--accent)">
+            {{ t.repoLink }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+          </a>
+        </div>
+      </article>
+    </sc-for>
+  </div>
+  <p style="text-align:center; margin:32px 0 0; font-size:14.5px; color:var(--muted)">
+    <a href="https://github.com/Helencb?tab=repositories" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600; border-bottom:1px solid transparent; transition:border-color .18s ease" style-hover="border-color:var(--accent)">{{ t.allRepos }}</a>
+  </p>
+</section>
+
+<section id="arquitetura" style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px; min-height:100svh; display:flex; flex-direction:column; justify-content:center">
+  <div aria-hidden="true" style="position:absolute; z-index:-1; top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%); background:var(--bg3); overflow:hidden">
+    <div style="position:absolute; inset:0; background:radial-gradient(70% 85% at 88% 110%, var(--glow-c), transparent 66%)"></div>
+    <svg width="100%" height="100%" style="display:block; opacity:.055; mask-image:linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent); -webkit-mask-image:linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent)"><defs><pattern id="pat-arq" width="200" height="200" patternUnits="userSpaceOnUse"><g fill="none" style="stroke:var(--accent)" stroke-width="1.2"><rect x="30" y="34" width="30" height="30"></rect><path d="M60 49h34"></path><rect x="94" y="34" width="30" height="30"></rect><path d="M45 64v40"></path><circle cx="45" cy="118" r="6"></circle><path d="M150 150h30"></path></g></pattern></defs><rect width="100%" height="100%" fill="url(#pat-arq)"></rect></svg>
+  </div>
+  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.arqEyebrow }}</span>
+  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 14px">{{ t.arqTitle }} <span style="color:var(--accent)">{{ t.arqTitleAccent }}</span></h2>
+  <p style="max-width:62ch; margin:0 auto 44px; text-align:center; color:var(--ink3); font-size:15.5px; text-wrap:pretty">{{ t.arqBody }}</p>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:clamp(24px,3vw,36px); align-items:start">
+    <div>
+      <h3 style="display:flex; align-items:center; gap:9px; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0 0 22px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M7 16h8"></path><path d="M7 11h12"></path><path d="M7 6h3"></path></svg>
+        {{ t.arqFlowTitle }}
+      </h3>
+      <ol style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0">
+        <sc-for list="{{ flow }}" as="step" hint-placeholder-count="3">
+          <li style="display:grid; grid-template-columns:auto 1fr; gap:0 18px">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:6px">
+              <span style="width:38px; height:38px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-radius:50%; border:1px solid var(--ring); background:var(--surface); color:var(--accent); font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:600">{{ step.n }}</span>
+              <span style="width:1px; flex:1; background:var(--line); min-height:22px"></span>
+            </div>
+            <div style="padding-bottom:26px; min-width:0">
+              <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; margin-bottom:7px">
+                <span style="font-size:15.5px; font-weight:700; color:var(--ink)">{{ step.title }}</span>
+                <span style="font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:600; letter-spacing:.06em; padding:3px 9px; border-radius:999px; border:1px solid var(--ring); color:var(--accent)">{{ step.status }}</span>
+              </div>
+              <p style="margin:0 0 8px; font-size:14px; color:var(--ink4); text-wrap:pretty">{{ step.desc }}</p>
+              <p style="margin:0; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--muted)">{{ step.endpoint }}</p>
+              <sc-if value="{{ step.note }}" hint-placeholder-val="{{ false }}">
+                <p style="display:flex; align-items:flex-start; gap:8px; margin:10px 0 0; padding-left:11px; border-left:2px solid var(--ring); font-size:13px; color:var(--accent)">{{ step.note }}</p>
+              </sc-if>
+            </div>
+          </li>
+        </sc-for>
+      </ol>
+    </div>
+
+    <div style="min-width:0; display:flex; flex-direction:column; gap:22px">
+      <div>
+        <h3 style="display:flex; align-items:center; gap:9px; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0 0 14px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+          {{ t.arqLayersTitle }}
+        </h3>
+        <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px; background:var(--surface2); border:1px solid var(--line); border-radius:12px; overflow:hidden">
+          <sc-for list="{{ layers }}" as="l" hint-placeholder-count="5">
+            <li style="display:grid; grid-template-columns:minmax(96px, auto) 1fr; gap:8px 16px; padding:11px 16px; background:var(--surface); font-size:13.5px">
+              <span style="font-family:'JetBrains Mono', monospace; font-weight:600; color:var(--accent)">{{ l.pkg }}</span>
+              <span style="color:var(--ink4); min-width:0">{{ l.what }}</span>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+
+      <div>
+        <h3 style="display:flex; align-items:center; gap:9px; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0 0 14px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          {{ t.arqCodeTitle }}
+        </h3>
+        <div style="border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface2)">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 16px; border-bottom:1px solid var(--line); background:var(--surface3)">
+            <span style="font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:600; letter-spacing:.06em; color:var(--accent)">POST /api/sales</span>
+            <span style="font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)">{{ t.arqCodeTag }}</span>
+          </div>
+          <pre style="margin:0; padding:18px 16px; overflow-x:auto; font-family:'JetBrains Mono', monospace; font-size:12.5px; line-height:1.75; color:var(--ink3)"><code>{
+  <span style="color:var(--code-key)">"clientId"</span>: <span style="color:var(--code-num)">1</span>,
+  <span style="color:var(--code-key)">"sellerId"</span>: <span style="color:var(--code-num)">1</span>,
+  <span style="color:var(--code-key)">"description"</span>: <span style="color:var(--code-str)">"Venda de equipamento TI"</span>,
+  <span style="color:var(--code-key)">"paymentMethod"</span>: <span style="color:var(--code-str)">"CREDIT_CARD"</span>,
+  <span style="color:var(--code-key)">"discount"</span>: <span style="color:var(--code-num)">100.00</span>,
+  <span style="color:var(--code-key)">"items"</span>: [
+    {
+      <span style="color:var(--code-key)">"productId"</span>: <span style="color:var(--code-num)">1</span>,
+      <span style="color:var(--code-key)">"quantity"</span>: <span style="color:var(--code-num)">2</span>
+    }
+  ]
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sobre" style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px; min-height:100svh; display:flex; flex-direction:column; justify-content:center">
+  <div aria-hidden="true" style="position:absolute; z-index:-1; top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%); background:var(--bg); overflow:hidden">
+    <div style="position:absolute; inset:0; background:radial-gradient(70% 85% at 88% 110%, var(--glow-c), transparent 66%)"></div>
+    <svg width="100%" height="100%" style="display:block; opacity:.06; mask-image:linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent); -webkit-mask-image:linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent)"><defs><pattern id="pat-sobre" width="72" height="72" patternUnits="userSpaceOnUse"><g style="stroke:var(--accent)" stroke-width="1.1"><path d="M36 28v16"></path><path d="M28 36h16"></path></g></pattern></defs><rect width="100%" height="100%" fill="url(#pat-sobre)"></rect></svg>
+  </div>
+  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.aboutEyebrow }}</span>
+  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.aboutTitle }} <span style="color:var(--accent)">{{ t.aboutTitleAccent }}</span></h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: clamp(28px,4vw,48px); align-items: center; position: relative">
+    <div style="justify-self: center; position: relative; width: 405px; aspect-ratio: 1; display: grid; place-items: center; height: 405px">
+      
+    </div>
+    <div style="min-width:0">
+      <p style="color:var(--ink3); font-size:15.5px; margin:0 0 16px; text-wrap:pretty">{{ t.about1 }}</p>
+      <p style="color:var(--ink3); font-size:15.5px; margin:0 0 24px; text-wrap:pretty">{{ t.about2 }}</p>
+      <a href="cv-helen-cristina-batista.pdf" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; padding:11px 20px; border-radius:999px; border:1px solid var(--line3); color:var(--ink); font-size:14px; font-weight:600; transition:all .18s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+        {{ t.cv }}
+      </a>
+    </div>
+  <div role="tooltip" aria-hidden="{{ tipHidden }}" style="{{ tipStyle }}">
+    <span style="display:block; width:100%; padding:12px 14px; border-radius:12px; background:var(--bg); border:1px solid var(--ring); box-shadow:0 14px 30px var(--shadow); color:var(--ink2); font-size:13.5px; line-height:1.5; text-align:left; text-wrap:pretty">“Código limpo, arquitetura bem definida e aprendizado contínuo constroem sistemas escaláveis.”</span>
+  </div>
+  <img src="https://avatars.githubusercontent.com/u/222487196?v=4&amp;s=512" alt="Helen Cristina Batista" width="512" height="512" tabIndex="0" onMouseEnter="{{ showTip }}" onMouseLeave="{{ hideTip }}" onFocus="{{ showTip }}" onBlur="{{ hideTip }}" style="position: absolute; inset: 26px; width: min(100%, 380px); height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: center 20%; background: var(--surface); border: 2px solid var(--accent); box-shadow: 0 0 0 10px var(--bg3), 0 0 0 11px var(--ring), 0 18px 40px var(--shadow); display: block; left: 12px; top: -44px"></div>
+</section>
+
+<section style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px; min-height:100svh; display:flex; flex-direction:column; justify-content:center">
+  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.skillsEyebrow }}</span>
+  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.skillsTitle }} <span style="color:var(--accent)">{{ t.skillsTitleAccent }}</span></h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:clamp(28px,4vw,48px); align-items:start">
+    <p style="color:var(--ink3); font-size:15.5px; margin:0; text-wrap:pretty">{{ t.skillsBody }}</p>
+    <ul style="display:flex; flex-wrap:wrap; gap:10px; list-style:none; margin:0; padding:0">
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Java 17</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Spring Boot</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Spring Security</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Spring Data JPA</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Hibernate</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">JWT</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">REST API</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">RabbitMQ</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Redis</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Eureka</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">API Gateway</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">MapStruct</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">MySQL</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">MongoDB</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Prometheus</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Grafana</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">JUnit 5</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Mockito</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Docker</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">AWS</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Azure</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Terraform</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Git</li>
+      <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Maven</li>
+    </ul>
+  </div>
+</section>
+
+<section id="contato" style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px clamp(56px,8vw,96px); min-height:100svh; display:flex; flex-direction:column; justify-content:center">
+  <div aria-hidden="true" style="position:absolute; z-index:-1; top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%); background:var(--bg2); overflow:hidden">
+    <div style="position:absolute; inset:0; background:radial-gradient(70% 90% at 20% 110%, var(--glow-c), transparent 68%)"></div>
+    <svg width="100%" height="100%" style="display:block; opacity:.055; mask-image:linear-gradient(to bottom, transparent, #000 36%, #000 64%, transparent); -webkit-mask-image:linear-gradient(to bottom, transparent, #000 36%, #000 64%, transparent)"><defs><pattern id="pat-contato" width="210" height="210" patternUnits="userSpaceOnUse"><g fill="none" style="stroke:var(--accent)" stroke-width="1.2" stroke-linejoin="round"><rect x="34" y="44" width="52" height="34"></rect><path d="M34 47l26 19 26-19"></path><circle cx="156" cy="150" r="2.2"></circle></g></pattern></defs><rect width="100%" height="100%" fill="url(#pat-contato)"></rect></svg>
+  </div>
+  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.contactEyebrow }}</span>
+  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.contactTitle }} <span style="color:var(--accent)">{{ t.contactTitleAccent }}</span></h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:clamp(28px,4vw,44px); align-items:start">
+    <div>
+      <p style="display:inline-flex; align-items:center; gap:8px; margin:0 0 14px; font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent)">
+        <span style="width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px var(--glow-c)"></span>
+        {{ t.available }}
+      </p>
+      <h3 style="margin:0 0 8px; font-size:19px; font-weight:700">{{ t.contactHead }}</h3>
+      <p style="color:var(--ink4); font-size:15px; margin:0 0 22px; text-wrap:pretty">{{ t.contactBody }}</p>
+      <div style="display:flex; flex-direction:column; gap:12px">
+        <div style="display:flex; align-items:center; gap:8px">
+          <a href="mailto:h.c.batista2002@gmail.com" style="display:flex; align-items:center; gap:12px; flex:1; min-width:0; padding:10px 12px 10px 0; border-radius:10px; color:var(--ink); font-size:14.5px; font-weight:600; transition:background .18s ease" style-hover="background:var(--surface); color:var(--accent)">
+            <span style="width:38px; height:38px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--accent)">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+            </span>
+            <span style="display:flex; flex-direction:column; min-width:0">
+              <span style="word-break:break-word">Helen Cristina Batista</span>
+              <span ref="{{ emailRef }}" style="font-size:13px; font-weight:500; color:var(--muted); word-break:break-all; user-select:all">h.c.batista2002@gmail.com</span>
+            </span>
+          </a>
+          <button type="button" onClick="{{ copyEmail }}" aria-label="{{ t.copyEmail }}" style="padding:8px 14px; border-radius:999px; border:1px solid var(--line); background:none; color:var(--accent); font-size:12.5px; font-weight:600; white-space:nowrap; cursor:pointer; transition:border-color .18s ease, background .18s ease" style-hover="border-color:var(--accent); background:var(--surface)">{{ copyLabel }}</button>
+        </div>
+        <a href="https://www.linkedin.com/in/hcbatista/" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:12px; padding:10px 12px 10px 0; border-radius:10px; color:var(--ink); font-size:14.5px; font-weight:600; transition:background .18s ease" style-hover="background:var(--surface); color:var(--accent)">
+          <span style="width:38px; height:38px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--accent)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+          </span>
+          Helen Cristina Batista
+        </a>
+        <p style="display:flex; align-items:center; gap:12px; margin:0; padding:10px 12px 10px 0; color:var(--ink3); font-size:14.5px">
+          <span style="width:38px; height:38px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--accent)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          </span>
+          Assis, SP · Brasil
+        </p>
+      </div>
+    </div>
+    <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+      <form onSubmit="{{ submit }}" style="display:grid; gap:18px; background:var(--surface2); border:1px solid var(--line); border-radius:14px; padding:clamp(20px,3vw,28px)">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:18px">
+          <div style="display:grid; gap:7px; min-width:0">
+            <label for="f-nome" style="font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)">{{ t.fName }}</label>
+            <input id="f-nome" type="text" name="nome" required="" autoComplete="name" placeholder="{{ t.fNamePh }}" style="width:100%; padding:13px 15px; border-radius:10px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); font-size:14.5px" style-focus="border-color:var(--accent)">
+          </div>
+          <div style="display:grid; gap:7px; min-width:0">
+            <label for="f-email" style="font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)">{{ t.fEmail }}</label>
+            <input id="f-email" type="email" name="email" required="" autoComplete="email" placeholder="voce@exemplo.com" style="width:100%; padding:13px 15px; border-radius:10px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); font-size:14.5px" style-focus="border-color:var(--accent)">
+          </div>
+        </div>
+        <div style="display:grid; gap:7px">
+          <label for="f-msg" style="font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)">{{ t.fMsg }}</label>
+          <textarea id="f-msg" name="mensagem" required="" rows="5" placeholder="{{ t.fMsgPh }}" style="width:100%; padding:13px 15px; border-radius:10px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); font-size:14.5px; resize:vertical; min-height:120px" style-focus="border-color:var(--accent)"></textarea>
+        </div>
+        <p style="margin:0; font-size:12.5px; color:var(--muted)">{{ t.formNote }}</p>
+        <button type="submit" style="display:inline-flex; align-items:center; gap:8px; justify-self:start; padding:12px 22px; border-radius:999px; border:none; background:var(--accent); color:var(--on-accent); font-size:14.5px; font-weight:700; cursor:pointer; transition:transform .18s ease, box-shadow .18s ease" style-hover="transform:translateY(-2px); box-shadow:0 10px 22px var(--glow-d)" style-active="transform:translateY(0)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+          {{ t.fSend }}
+        </button>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <p style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:0; padding:12px 14px; background:var(--surface); border:1px solid var(--ring); border-radius:10px; font-size:13.5px; color:var(--ink3)">
+            {{ t.sentNote }}
+            <a href="{{ gmailUrl }}" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600; border-bottom:1px solid transparent; transition:border-color .18s ease" style-hover="border-color:var(--accent)">{{ t.sentLink }}</a>
+          </p>
+        </sc-if>
+      </form>
+    </sc-if>
+  </div>
+  <footer style="margin-top:clamp(40px,6vw,72px); padding-top:32px; border-top:1px solid var(--line)">
+  <div style="max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; gap:20px 28px; align-items:center; justify-content:space-between">
+    <span style="font-weight:800; font-size:18px">Helen<span style="color:var(--accent)">.</span></span>
+    <nav aria-label="{{ t.navLabel }}" style="display:flex; flex-wrap:wrap; gap:8px 22px; font-size:14.5px">
+      <a href="#home" style="color:var(--muted)" style-hover="color:var(--ink)">{{ t.navHome }}</a>
+      <a href="#projetos" style="color:var(--muted)" style-hover="color:var(--ink)">{{ t.navWork }}</a>
+      <a href="#arquitetura" style="color:var(--muted)" style-hover="color:var(--ink)">{{ t.navArq }}</a>
+      <a href="#sobre" style="color:var(--muted)" style-hover="color:var(--ink)">{{ t.navAbout }}</a>
+      <a href="#contato" style="color:var(--muted)" style-hover="color:var(--ink)">{{ t.navContact }}</a>
+    </nav>
+    <div style="display:flex; gap:12px">
+      <a href="https://github.com/Helencb" target="_blank" rel="noopener" aria-label="GitHub" style="width:40px; height:40px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink2); transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 2-2.64-.5-5.36-.5-8 0-2-2-3-2-3-2-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.6.6-.9 1.4-1 2.2v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/hcbatista/" target="_blank" rel="noopener" aria-label="LinkedIn" style="width:40px; height:40px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink2); transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+      </a>
+    </div>
+  </div>
+  <p style="max-width:1100px; margin:24px auto 0; font-size:13px; color:var(--muted); text-align:center">{{ t.footer }}</p>
+  </footer>
+</section>
+</main>
+
+<button type="button" onClick="{{ toTop }}" aria-label="{{ t.toTop }}" title="{{ t.toTop }}" style="{{ toTopStyle }}" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-3px)">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"></path></svg>
+</button>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Português&quot;,&quot;English&quot;],&quot;default&quot;:&quot;Português&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Conteúdo&quot;},&quot;showForm&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conteúdo&quot;}}">
+const DICT = {
+  pt: {
+    skip: "Ir para o conteúdo",
+    navLabel: "Navegação principal", langLabel: "Idioma",
+    navHome: "Início", navWork: "Projetos", navArq: "Arquitetura", navAbout: "Sobre", navContact: "Contato",
+    stRepos: "Repositórios", stStars: "Estrelas", stLang: "Linguagem principal", stPushed: "Último push",
+    liveGithub: "Dados ao vivo do GitHub",
+    cv: "Baixar CV",
+    heroEyebrow: "Bem-vindo(a)", heroPre: "Olá, eu sou",
+    heroBody: "Desenvolvedora Back-End em formação, focada em construir aplicações robustas e escaláveis com Java e Spring. Vamos construir algo sólido juntos.",
+    doEyebrow: "Minha atuação", doTitle: "O que eu", doTitleAccent: "faço.",
+    do1Title: "Desenvolvimento Back-End",
+    do1Body: "APIs REST escaláveis com Java, Spring Boot e Spring Security, do modelo de dados ao deploy.",
+    do2Title: "Arquitetura & Microsserviços",
+    do2Body: "Comunicação assíncrona com RabbitMQ, service discovery com Eureka e API Gateway.",
+    do3Title: "Observabilidade & Boas Práticas",
+    do3Body: "Monitoramento com Prometheus e Grafana, testes com JUnit5/Mockito e Clean Code.",
+    projEyebrow: "Meu trabalho", projTitle: "Projetos em", projTitleAccent: "destaque.",
+    repoLink: "Ver repositório", allRepos: "Ver todos os repositórios no GitHub",
+    arqEyebrow: "Estudo de caso · Api_CRM", arqTitle: "Arquitetura em", arqTitleAccent: "camadas.",
+    arqBody: "O core do Api_CRM é o fluxo de vendas. A venda atravessa uma máquina de estados com validação de estoque em dois momentos e lock de banco na finalização, para que dois vendedores não vendam o mesmo último item.",
+    arqFlowTitle: "Fluxo da venda", arqLayersTitle: "Pacotes do domínio",
+    arqCodeTitle: "Request de criação", arqCodeTag: "Corpo da requisição",
+    aboutEyebrow: "Me conheça", aboutTitle: "Sobre", aboutTitleAccent: "mim.",
+    about1: "Sou desenvolvedora Back-End em formação, focada na construção de aplicações robustas utilizando o ecossistema Java e Spring. Atualmente estudo e desenvolvo projetos com foco em APIs REST escaláveis, arquitetura de microsserviços, comunicação assíncrona com RabbitMQ, segurança com JWT e Spring Security, observabilidade com Prometheus e Grafana, containerização com Docker e infraestrutura em nuvem.",
+    about2: "Estudante de Análise e Desenvolvimento de Sistemas na UNIMAR, baseada em Assis, SP. Interesse em arquitetura de software, boas práticas, Clean Code e sistemas distribuídos.",
+    skillsEyebrow: "Ferramentas & tecnologias", skillsTitle: "Habilidades", skillsTitleAccent: "técnicas.",
+    skillsBody: "Ecossistema Java/Spring, mensageria, bancos relacionais e não relacionais, observabilidade e containerização — as ferramentas que uso no dia a dia para construir e operar sistemas back-end.",
+    contactEyebrow: "Fale comigo", contactTitle: "Entre em", contactTitleAccent: "contato.",
+    available: "Disponível para oportunidades",
+    contactHead: "Estou disponível para oportunidades",
+    contactBody: "Aberta a vagas e projetos na área de desenvolvimento Back-End.",
+    fName: "Nome", fNamePh: "Nome completo", fEmail: "E-mail", fMsg: "Mensagem",
+    fMsgPh: "Conte em duas linhas sobre a vaga ou o projeto.", fSend: "Enviar mensagem",
+    formNote: "O envio abre uma nova aba do Gmail com a mensagem já preenchida.",
+    sentNote: "Abrimos o Gmail em outra aba com a mensagem pronta.",
+    sentLink: "Reabrir no Gmail",
+    sentAlt: "usar app de e-mail instalado",
+    copy: "copiar", copied: "copiado!", copyFail: "selecione e copie", copyEmail: "Copiar endereço de e-mail",
+    stars: "estrelas no GitHub",
+    toTop: "Voltar ao topo",
+    themeLight: "Tema claro", themeDark: "Tema escuro",
+    footer: "© 2026 Helen Cristina Batista · Desenvolvedora Back-End Java & Spring Boot"
+  },
+  en: {
+    skip: "Skip to content",
+    navLabel: "Main navigation", langLabel: "Language",
+    navHome: "Home", navWork: "Projects", navArq: "Architecture", navAbout: "About", navContact: "Contact",
+    stRepos: "Repositories", stStars: "Stars", stLang: "Main language", stPushed: "Last push",
+    liveGithub: "Live data from GitHub",
+    cv: "Download CV",
+    heroEyebrow: "Welcome", heroPre: "Hi, I'm",
+    heroBody: "Back-end developer in training, focused on building robust, scalable applications with Java and Spring. Let's build something solid together.",
+    doEyebrow: "What I work on", doTitle: "What I", doTitleAccent: "do.",
+    do1Title: "Back-End Development",
+    do1Body: "Scalable REST APIs with Java, Spring Boot and Spring Security — from the data model to deploy.",
+    do2Title: "Architecture & Microservices",
+    do2Body: "Asynchronous messaging with RabbitMQ, service discovery with Eureka and an API Gateway.",
+    do3Title: "Observability & Good Practice",
+    do3Body: "Monitoring with Prometheus and Grafana, testing with JUnit 5 / Mockito, and Clean Code.",
+    projEyebrow: "My work", projTitle: "Featured", projTitleAccent: "projects.",
+    repoLink: "View repository", allRepos: "See all repositories on GitHub",
+    arqEyebrow: "Case study · Api_CRM", arqTitle: "Layered", arqTitleAccent: "architecture.",
+    arqBody: "The core of Api_CRM is the sales flow. A sale moves through a state machine with stock validation at two points and a database lock on completion, so two sellers can't sell the same last item.",
+    arqFlowTitle: "Sale flow", arqLayersTitle: "Domain packages",
+    arqCodeTitle: "Creation request", arqCodeTag: "Request body",
+    aboutEyebrow: "Get to know me", aboutTitle: "About", aboutTitleAccent: "me.",
+    about1: "I'm a back-end developer in training, focused on building robust applications on the Java and Spring ecosystem. I currently study and build projects around scalable REST APIs, microservice architecture, asynchronous messaging with RabbitMQ, security with JWT and Spring Security, observability with Prometheus and Grafana, containerization with Docker and cloud infrastructure.",
+    about2: "Systems Analysis and Development student at UNIMAR, based in Assis, SP, Brazil. Interested in software architecture, good practice, Clean Code and distributed systems.",
+    skillsEyebrow: "Tools & technologies", skillsTitle: "Technical", skillsTitleAccent: "skills.",
+    skillsBody: "The Java/Spring ecosystem, messaging, relational and non-relational databases, observability and containerization — the tools I use day to day to build and run back-end systems.",
+    contactEyebrow: "Get in touch", contactTitle: "Contact", contactTitleAccent: "me.",
+    available: "Open to opportunities",
+    contactHead: "I'm available for opportunities",
+    contactBody: "Open to back-end development roles and projects.",
+    fName: "Name", fNamePh: "Full name", fEmail: "Email", fMsg: "Message",
+    fMsgPh: "Two lines about the role or project.", fSend: "Send message",
+    formNote: "Sending opens a new Gmail tab with the message pre-filled.",
+    sentNote: "We opened Gmail in another tab with the message ready.",
+    sentLink: "Reopen in Gmail",
+    sentAlt: "use installed email app",
+    copy: "copy", copied: "copied!", copyFail: "select and copy", copyEmail: "Copy email address",
+    stars: "GitHub stars",
+    toTop: "Back to top",
+    themeLight: "Light theme", themeDark: "Dark theme",
+    footer: "© 2026 Helen Cristina Batista · Back-End Developer · Java & Spring Boot"
+  }
+};
+
+const PROJECTS = {
+  pt: [
+    { kicker: "01 · Java", name: "api_gateway", stars: 6, url: "https://github.com/Helencb/api_gateway",
+      desc: "API Gateway enterprise construída com Spring Cloud Gateway, Eureka, JWT, Redis, Resilience4j, Micrometer e Prometheus para roteamento dinâmico, segurança, observabilidade, rate limiting e tolerância a falhas.",
+      highlight: "Roteamento dinâmico, rate limiting com Redis e circuit breaker com Resilience4j.",
+      tags: ["Spring Cloud Gateway", "Eureka", "Redis", "Resilience4j", "Prometheus"] },
+    { kicker: "02 · Java", name: "Api_CRM", stars: 2, url: "https://github.com/Helencb/Api_CRM",
+      desc: "API REST de gestão de vendas e relacionamento com clientes, em arquitetura em camadas: RBAC de gerente e vendedor com JWT, máquina de estados da venda (pendente, concluída, cancelada com estorno de estoque) e documentação Swagger.",
+      highlight: "Lock pessimista no fechamento da venda para impedir venda do mesmo item em estoque.",
+      tags: ["Spring Boot 3.2", "Spring Security 6", "MapStruct", "JUnit 5", "OpenAPI"] }
+  ],
+  en: [
+    { kicker: "01 · Java", name: "api_gateway", stars: 6, url: "https://github.com/Helencb/api_gateway",
+      desc: "Enterprise API Gateway built with Spring Cloud Gateway, Eureka, JWT, Redis, Resilience4j, Micrometer and Prometheus for dynamic routing, security, observability, rate limiting and fault tolerance.",
+      highlight: "Dynamic routing, Redis-backed rate limiting and circuit breaking with Resilience4j.",
+      tags: ["Spring Cloud Gateway", "Eureka", "Redis", "Resilience4j", "Prometheus"] },
+    { kicker: "02 · Java", name: "Api_CRM", stars: 2, url: "https://github.com/Helencb/Api_CRM",
+      desc: "Layered REST API for sales and customer relationship management: manager/seller RBAC over JWT, a sale state machine (pending, completed, cancelled with stock reversal) and Swagger documentation.",
+      highlight: "Pessimistic locking on sale completion so the same stock item can't be sold twice.",
+      tags: ["Spring Boot 3.2", "Spring Security 6", "MapStruct", "JUnit 5", "OpenAPI"] }
+  ]
+};
+
+const FLOW = {
+  pt: [
+    { n: "01", title: "Criação", status: "PENDING", endpoint: "POST /api/sales",
+      desc: "Valida se há estoque suficiente no momento do pedido, sem baixar o estoque — reserva lógica.",
+      note: "Vendedor cria, mas não finaliza." },
+    { n: "02", title: "Finalização", status: "COMPLETED", endpoint: "PUT /api/sales/{id}/complete",
+      desc: "Revalida o estoque e efetua a baixa real. Restrito a gerentes.",
+      note: "PESSIMISTIC_WRITE no banco impede overselling." },
+    { n: "03", title: "Cancelamento", status: "CANCELLED", endpoint: "PUT /api/sales/{id}/cancel",
+      desc: "Exige motivo. Se a venda já estava concluída, os itens são estornados ao estoque automaticamente.",
+      note: "" }
+  ],
+  en: [
+    { n: "01", title: "Creation", status: "PENDING", endpoint: "POST /api/sales",
+      desc: "Checks that stock is sufficient at order time without deducting it — a logical reservation.",
+      note: "Sellers create, but cannot complete." },
+    { n: "02", title: "Completion", status: "COMPLETED", endpoint: "PUT /api/sales/{id}/complete",
+      desc: "Re-validates stock and performs the real deduction. Managers only.",
+      note: "PESSIMISTIC_WRITE on the row prevents overselling." },
+    { n: "03", title: "Cancellation", status: "CANCELLED", endpoint: "PUT /api/sales/{id}/cancel",
+      desc: "A reason is required. If the sale was already completed, items are automatically returned to stock.",
+      note: "" }
+  ]
+};
+
+const LAYERS = {
+  pt: [
+    { pkg: "auth", what: "Autenticação, login e gestão de usuários base" },
+    { pkg: "security", what: "Spring Security, filtros JWT e CORS" },
+    { pkg: "sale", what: "Core do negócio: fluxo de vendas e itens" },
+    { pkg: "product", what: "Catálogo de produtos e estoque" },
+    { pkg: "clients", what: "Gestão da carteira de clientes" },
+    { pkg: "dashboard", what: "Agregação de dados para relatórios gerenciais" },
+    { pkg: "exception", what: "Tratamento global de erros (ControllerAdvice)" }
+  ],
+  en: [
+    { pkg: "auth", what: "Authentication, login and base user management" },
+    { pkg: "security", what: "Spring Security, JWT filters and CORS" },
+    { pkg: "sale", what: "Business core: sales flow and items" },
+    { pkg: "product", what: "Product catalogue and stock" },
+    { pkg: "clients", what: "Client portfolio management" },
+    { pkg: "dashboard", what: "Data aggregation for management reports" },
+    { pkg: "exception", what: "Global error handling (ControllerAdvice)" }
+  ]
+};
+
+const EMAIL = "h.c.batista2002@gmail.com";
+const NAME = "Helen Cristina";
+
+class Component extends DCLogic {
+  state = { lang: null, copied: false, copyFailed: false, sent: false, gmailUrl: "", tip: false, typed: 0, pct: 0, active: "home", scrolled: false, mx: 0, my: 0, glow: false, theme: "dark", gh: null };
+  emailRef = React.createRef();
+
+  currentLang() {
+    if (this.state.lang) return this.state.lang;
+    return (this.props.defaultLang || "Português") === "English" ? "en" : "pt";
+  }
+
+  setLang(lang) {
+    this.setState({ lang: lang });
+    if (typeof document !== "undefined") document.documentElement.lang = lang === "en" ? "en" : "pt-BR";
+  }
+
+  startTyping() {
+    if (this._typing) return;
+    this._typing = true;
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) { this.setState({ typed: NAME.length }); return; }
+    this._typeTimer = setInterval(() => {
+      this.setState(s => {
+        if (s.typed >= NAME.length) { clearInterval(this._typeTimer); return null; }
+        return { typed: s.typed + 1 };
+      });
+    }, 85);
+  }
+
+  trackScroll() {
+    if (this._scrollBound) return;
+    this._scrollBound = true;
+    const ids = ["home", "projetos", "arquitetura", "sobre", "contato"];
+    const onScroll = () => {
+      if (this._raf) return;
+      this._raf = requestAnimationFrame(() => {
+        this._raf = null;
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0;
+        let active = ids[0];
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.4) active = id;
+        });
+        this.setState({ pct: pct, active: active, scrolled: window.scrollY > 500 });
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    this._onScroll = onScroll;
+    onScroll();
+  }
+
+  loadGitHub() {
+    if (this._ghLoaded) return;
+    this._ghLoaded = true;
+    Promise.all([
+      fetch("https://api.github.com/users/Helencb").then(r => r.ok ? r.json() : null),
+      fetch("https://api.github.com/users/Helencb/repos?per_page=100&sort=pushed").then(r => r.ok ? r.json() : null)
+    ]).then(([user, repos]) => {
+      if (!user || !Array.isArray(repos)) return;
+      const stars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+      const langs = {};
+      repos.forEach(r => { if (r.language) langs[r.language] = (langs[r.language] || 0) + 1; });
+      const topLang = Object.keys(langs).sort((a, b) => langs[b] - langs[a])[0] || null;
+      const pushed = repos.map(r => r.pushed_at).filter(Boolean).sort().pop();
+      this.setState({ gh: {
+        repos: user.public_repos != null ? user.public_repos : repos.length,
+        stars: stars, lang: topLang, pushed: pushed
+      } });
+    }).catch(() => { /* strip stays hidden */ });
+  }
+
+  applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    try { localStorage.setItem("helen-portfolio-theme", theme); } catch (err) { /* ignore */ }
+  }
+
+  initTheme() {
+    if (this._themeInit) return;
+    this._themeInit = true;
+    let saved = null;
+    try { saved = localStorage.getItem("helen-portfolio-theme"); } catch (err) { /* ignore */ }
+    const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+    const theme = saved || (prefersLight ? "light" : "dark");
+    this.setState({ theme: theme });
+    this.applyTheme(theme);
+  }
+
+  trackPointer() {
+    if (this._pointerBound) return;
+    this._pointerBound = true;
+    if (window.matchMedia && !window.matchMedia("(pointer: fine)").matches) return;
+    this._onMove = (e) => {
+      this._pt = { x: e.clientX, y: e.clientY };
+      if (this._moveRaf) return;
+      this._moveRaf = requestAnimationFrame(() => {
+        this._moveRaf = null;
+        this.setState({ mx: this._pt.x, my: this._pt.y, glow: true });
+      });
+    };
+    this._onLeave = () => this.setState({ glow: false });
+    window.addEventListener("pointermove", this._onMove, { passive: true });
+    document.addEventListener("mouseleave", this._onLeave);
+  }
+
+  navStyle(id) {
+    const on = this.state.active === id;
+    return "color:" + (on ? "var(--ink)" : "var(--muted)") + "; padding:4px 0; border-bottom:1px solid " +
+      (on ? "var(--accent)" : "transparent") + "; transition:color .18s ease, border-color .18s ease";
+  }
+
+  componentDidMount() {
+    this.initTheme();
+    this.loadGitHub();
+    this.startTyping();
+    this.trackScroll();
+    this.trackPointer();
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = this.currentLang() === "en" ? "en" : "pt-BR";
+      document.title = "Helen Cristina Batista · Desenvolvedora Back-End";
+    }
+  }
+
+  langBtnStyle(active) {
+    return "padding:7px 14px; border:none; background:" + (active ? "var(--accent)" : "transparent") +
+      "; color:" + (active ? "var(--on-accent)" : "var(--muted)") +
+      "; font-size:13px; font-weight:700; letter-spacing:.04em; cursor:pointer; transition:background .18s ease, color .18s ease";
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._typeTimer);
+    clearTimeout(this._copyTimer);
+    if (this._onScroll) window.removeEventListener("scroll", this._onScroll);
+    if (this._onMove) window.removeEventListener("pointermove", this._onMove);
+    if (this._onLeave) document.removeEventListener("mouseleave", this._onLeave);
+  }
+
+  copyEmail() {
+    const done = () => {
+      this.setState({ copied: true });
+      clearTimeout(this._copyTimer);
+      this._copyTimer = setTimeout(() => this.setState({ copied: false }), 1800);
+    };
+    const legacy = () => {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = EMAIL;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed; top:0; left:0; opacity:0";
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, EMAIL.length);
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      } catch (err) { return false; }
+    };
+    const fail = () => {
+      this.setState({ copied: false, copyFailed: true });
+      const node = this.emailRef && this.emailRef.current;
+      if (node && window.getSelection) {
+        try {
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        } catch (err) { /* address is visible either way */ }
+      }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(EMAIL).then(done, () => { if (legacy()) done(); else fail(); });
+    } else if (legacy()) {
+      done();
+    } else {
+      fail();
+    }
+  }
+
+  submit(e) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const lang = this.currentLang();
+    const subject = (lang === "en" ? "Portfolio contact — " : "Contato via portfólio — ") + (data.get("nome") || "");
+    const body = (data.get("mensagem") || "") + "\n\n" +
+      (lang === "en" ? "Reply to: " : "Responder para: ") + (data.get("email") || "");
+    const qs = "subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    const gmail = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(EMAIL) +
+      "&su=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    this.setState({ gmailUrl: gmail, mailtoUrl: "mailto:" + EMAIL + "?" + qs, sent: true });
+    window.open(gmail, "_blank", "noopener");
+  }
+
+  renderVals() {
+    if (!this._typing) setTimeout(() => this.startTyping(), 0);
+    if (!this._scrollBound) setTimeout(() => this.trackScroll(), 0);
+    if (!this._pointerBound) setTimeout(() => this.trackPointer(), 0);
+    if (!this._themeInit) setTimeout(() => this.initTheme(), 0);
+    if (!this._ghLoaded) setTimeout(() => this.loadGitHub(), 0);
+    const lang = this.currentLang();
+    const t = DICT[lang];
+    const projects = PROJECTS[lang].map(p => Object.assign({}, p, { starsLabel: p.stars + " " + t.stars }));
+    return {
+      t: t,
+      typedName: NAME.slice(0, this.state.typed),
+      progress: (this.state.pct || 0) + "%",
+      isDark: this.state.theme !== "light",
+      isLight: this.state.theme === "light",
+      themeLabel: this.state.theme === "light" ? t.themeDark : t.themeLight,
+      toggleTheme: () => {
+        const next = this.state.theme === "light" ? "dark" : "light";
+        this.setState({ theme: next });
+        this.applyTheme(next);
+      },
+      glowStyle: "position:fixed; left:0; top:0; z-index:0; width:460px; height:460px;" +
+        " margin:-230px 0 0 -230px; border-radius:50%; pointer-events:none;" +
+        " background:radial-gradient(circle, var(--glow-a), var(--glow-b) 45%, transparent 70%);" +
+        " filter:blur(42px); mix-blend-mode:var(--blend);" +
+        " transform:translate3d(" + (this.state.mx || 0) + "px," + (this.state.my || 0) + "px,0);" +
+        " opacity:" + (this.state.glow ? "1" : "0") + "; transition:opacity .35s ease",
+      navHomeStyle: this.navStyle("home"),
+      navWorkStyle: this.navStyle("projetos"),
+      navArqStyle: this.navStyle("arquitetura"),
+      navAboutStyle: this.navStyle("sobre"),
+      navContactStyle: this.navStyle("contato"),
+      toTop: () => window.scrollTo({ top: 0, behavior: "smooth" }),
+      toTopStyle: "position:fixed; right:22px; bottom:22px; z-index:120; width:46px; height:46px;" +
+        " display:flex; align-items:center; justify-content:center; border-radius:50%;" +
+        " border:1px solid var(--line); background:var(--header-bg); backdrop-filter:blur(8px);" +
+        " color:var(--ink2); cursor:pointer; transition:opacity .22s ease, transform .22s ease, border-color .18s ease, color .18s ease;" +
+        " opacity:" + (this.state.scrolled ? "1" : "0") +
+        "; pointer-events:" + (this.state.scrolled ? "auto" : "none"),
+      projects: projects,
+      flow: FLOW[lang],
+      layers: LAYERS[lang],
+      hasStats: !!this.state.gh,
+      stats: this.state.gh ? [
+        { label: t.stRepos, value: String(this.state.gh.repos) },
+        { label: t.stStars, value: String(this.state.gh.stars) },
+        { label: t.stLang, value: this.state.gh.lang || "—" },
+        { label: t.stPushed, value: this.state.gh.pushed
+            ? new Date(this.state.gh.pushed).toLocaleDateString(lang === "en" ? "en-GB" : "pt-BR",
+                { day: "2-digit", month: "short", year: "numeric" })
+            : "—" }
+      ] : [],
+      isPt: lang === "pt",
+      isEn: lang === "en",
+      ptStyle: this.langBtnStyle(lang === "pt"),
+      enStyle: this.langBtnStyle(lang === "en"),
+      setPt: () => this.setLang("pt"),
+      setEn: () => this.setLang("en"),
+      showTip: () => this.setState({ tip: true }),
+      hideTip: () => this.setState({ tip: false }),
+      tipHidden: this.state.tip ? "false" : "true",
+      tipStyle: "position:absolute; z-index:3; left:12px; top:-44px; width:min(100%, 380px);" +
+        " display:flex; justify-content:center; pointer-events:none;" +
+        " padding-top:calc(min(100%, 380px) + 46px); box-sizing:border-box;" +
+        " opacity:" + (this.state.tip ? "1" : "0") +
+        "; transform:translateY(" + (this.state.tip ? "0" : "8px") + ");" +
+        " transition:opacity .18s ease, transform .18s ease",
+      copyEmail: () => this.copyEmail(),
+      emailRef: this.emailRef,
+      copyLabel: this.state.copied ? t.copied : (this.state.copyFailed ? t.copyFail : t.copy),
+      showForm: this.props.showForm !== false,
+      submit: (e) => this.submit(e),
+      sent: this.state.sent,
+      gmailUrl: this.state.gmailUrl,
+      mailtoUrl: this.state.mailtoUrl
+    };
+  }
+}
+
+</script>
+</body>
+</html>
