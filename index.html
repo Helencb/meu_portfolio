@@ -58,13 +58,14 @@
 <div aria-hidden="true" style="position:fixed; left:0; top:0; z-index:140; height:3px; background:var(--accent); box-shadow:0 0 12px var(--glow-d); transition:width .08s linear; width:{{ progress }}"></div>
 
 <header style="position:sticky; top:0; z-index:100; background:var(--header-bg); backdrop-filter:blur(10px); border-bottom:1px solid var(--line)">
-  <div style="max-width:1100px; margin:0 auto; padding:14px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px">
+  <div style="max-width:1100px; margin:0 auto; padding:12px clamp(16px,4vw,24px); display:flex; flex-wrap:wrap; align-items:center; gap:12px clamp(14px,2.5vw,24px)">
     <span style="font-weight:800; font-size:18px; letter-spacing:-.01em">Helen<span style="color:var(--accent)">.</span></span>
-    <nav aria-label="{{ t.navLabel }}" style="display:flex; flex-wrap:wrap; gap:8px 22px; font-size:14.5px; font-weight:500; flex:1 1 200px; min-width:0">
+    <nav aria-label="{{ t.navLabel }}" style="display:flex; flex-wrap:nowrap; gap:22px; font-size:14.5px; font-weight:500; flex:1 1 240px; min-width:0; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:none; -ms-overflow-style:none; padding:2px 0">
       <a href="#home" style="{{ navHomeStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navHome }}</a>
       <a href="#projetos" style="{{ navWorkStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navWork }}</a>
       <a href="#arquitetura" style="{{ navArqStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navArq }}</a>
       <a href="#sobre" style="{{ navAboutStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navAbout }}</a>
+      <a href="#certificados" style="{{ navCertsStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navCerts }}</a>
       <a href="#contato" style="{{ navContactStyle }}" style-hover="color:var(--ink); border-color:var(--accent)">{{ t.navContact }}</a>
     </nav>
     <button type="button" onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:50%; border:1px solid var(--line); background:none; color:var(--ink2); cursor:pointer; transition:border-color .18s ease, color .18s ease" style-hover="border-color:var(--accent); color:var(--accent)">
@@ -90,7 +91,7 @@
 <section id="home" style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(56px,8vw,96px) 24px clamp(40px,6vw,72px); text-align:center; min-height:calc(100svh - 74px); display:flex; flex-direction:column; justify-content:center">
 
   <span style="display:block; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:18px; animation:fadeUp .6s ease both">{{ t.heroEyebrow }}</span>
-  <h1 style="font-size:clamp(32px,6vw,52px); font-weight:800; line-height:1.1; letter-spacing:-.02em; margin:0 0 18px; animation:fadeUp .6s ease both; animation-delay:.06s">{{ t.heroPre }} <span style="color:var(--accent); white-space:nowrap">{{ typedName }}<span aria-hidden="true" style="display:inline-block; width:3px; height:.9em; margin-left:5px; background:var(--accent); vertical-align:-.08em; animation:caret 1s step-end infinite"></span></span></h1>
+  <h1 style="font-size:clamp(27px,6.2vw,52px); font-weight:800; line-height:1.1; letter-spacing:-.02em; margin:0 0 18px; animation:fadeUp .6s ease both; animation-delay:.06s">{{ t.heroPre }} <span style="color:var(--accent); white-space:nowrap">{{ typedName }}<span aria-hidden="true" style="display:inline-block; width:3px; height:.9em; margin-left:5px; background:var(--accent); vertical-align:-.08em; animation:caret 1s step-end infinite"></span></span></h1>
   <p style="max-width:56ch; margin:0 auto; color:var(--ink2); font-size:17px; text-wrap:pretty; animation:fadeUp .6s ease both; animation-delay:.12s">{{ t.heroBody }}</p>
   <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px 18px; margin-top:26px; font-size:13.5px; color:var(--muted); animation:fadeUp .6s ease both; animation-delay:.15s">
     <span style="display:inline-flex; align-items:center; gap:7px">
@@ -124,9 +125,9 @@
     <div style="position:absolute; inset:0; background:radial-gradient(75% 90% at 12% -10%, var(--glow-c), transparent 68%)"></div>
     <svg width="100%" height="100%" style="display:block; opacity:.055; mask-image:linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent); -webkit-mask-image:linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent)"><defs><pattern id="pat-do" width="220" height="220" patternUnits="userSpaceOnUse"><g fill="none" style="stroke:var(--accent)" stroke-width="1.2"><rect x="30" y="36" width="58" height="22"></rect><rect x="30" y="66" width="58" height="22"></rect><circle cx="39" cy="47" r="1.6"></circle><circle cx="39" cy="77" r="1.6"></circle><path d="M140 160h44"></path><path d="M162 138v44"></path></g></pattern></defs><rect width="100%" height="100%" fill="url(#pat-do)"></rect></svg>
   </div>
-  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.doEyebrow }}</span>
-  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.doTitle }} <span style="color:var(--accent)">{{ t.doTitleAccent }}</span></h2>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px">
+  <span data-reveal="" style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.doEyebrow }}</span>
+  <h2 data-reveal="" style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.doTitle }} <span style="color:var(--accent)">{{ t.doTitleAccent }}</span></h2>
+  <div data-reveal-children="" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px">
     <div style="background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:14px; padding:28px; transition:transform .26s cubic-bezier(.22,.61,.36,1), box-shadow .26s ease, background .22s ease, border-color .22s ease, color .22s ease; animation:fadeUp .6s ease both" style-hover="background:var(--accent); border-color:var(--accent); color:var(--on-accent); transform:translateY(-10px) scale(1.06); box-shadow:0 0 0 8px var(--bg2), 0 0 0 10px var(--ring), 0 22px 44px var(--shadow)">
       <div style="width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:var(--chip); color:inherit; margin-bottom:20px">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2"></rect><rect width="20" height="8" x="2" y="14" rx="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
@@ -153,8 +154,8 @@
 
 <section id="projetos" style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px; min-height:100svh; display:flex; flex-direction:column; justify-content:center">
 
-  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.projEyebrow }}</span>
-  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.projTitle }} <span style="color:var(--accent)">{{ t.projTitleAccent }}</span></h2>
+  <span data-reveal="" style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.projEyebrow }}</span>
+  <h2 data-reveal="" style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.projTitle }} <span style="color:var(--accent)">{{ t.projTitleAccent }}</span></h2>
   <sc-if value="{{ hasStats }}" hint-placeholder-val="{{ false }}">
     <dl style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:1px; margin:0 0 26px; background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden">
       <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
@@ -169,7 +170,7 @@
       </div>
     </dl>
   </sc-if>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px">
+  <div data-reveal-children="" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px">
     <sc-for list="{{ projects }}" as="p" hint-placeholder-count="2">
       <article style="display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--line); border-radius:14px; overflow:hidden; transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease; animation:fadeUp .6s ease both" style-hover="transform:translateY(-5px); border-color:var(--ring); box-shadow:0 18px 36px var(--shadow)">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 24px; background:linear-gradient(160deg, var(--surface3), var(--surface2)); border-bottom:1px solid var(--line)">
@@ -210,11 +211,11 @@
     <div style="position:absolute; inset:0; background:radial-gradient(70% 85% at 88% 110%, var(--glow-c), transparent 66%)"></div>
     <svg width="100%" height="100%" style="display:block; opacity:.055; mask-image:linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent); -webkit-mask-image:linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent)"><defs><pattern id="pat-arq" width="200" height="200" patternUnits="userSpaceOnUse"><g fill="none" style="stroke:var(--accent)" stroke-width="1.2"><rect x="30" y="34" width="30" height="30"></rect><path d="M60 49h34"></path><rect x="94" y="34" width="30" height="30"></rect><path d="M45 64v40"></path><circle cx="45" cy="118" r="6"></circle><path d="M150 150h30"></path></g></pattern></defs><rect width="100%" height="100%" fill="url(#pat-arq)"></rect></svg>
   </div>
-  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.arqEyebrow }}</span>
-  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 14px">{{ t.arqTitle }} <span style="color:var(--accent)">{{ t.arqTitleAccent }}</span></h2>
-  <p style="max-width:62ch; margin:0 auto 44px; text-align:center; color:var(--ink3); font-size:15.5px; text-wrap:pretty">{{ t.arqBody }}</p>
+  <span data-reveal="" style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.arqEyebrow }}</span>
+  <h2 data-reveal="" style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 14px">{{ t.arqTitle }} <span style="color:var(--accent)">{{ t.arqTitleAccent }}</span></h2>
+  <p data-reveal="" style="max-width:62ch; margin:0 auto 44px; text-align:center; color:var(--ink3); font-size:15.5px; text-wrap:pretty">{{ t.arqBody }}</p>
 
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:clamp(24px,3vw,36px); align-items:start">
+  <div data-reveal-children="" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:clamp(24px,3vw,36px); align-items:start">
     <div>
       <h3 style="display:flex; align-items:center; gap:9px; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0 0 22px">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M7 16h8"></path><path d="M7 11h12"></path><path d="M7 6h3"></path></svg>
@@ -293,10 +294,10 @@
     <div style="position:absolute; inset:0; background:radial-gradient(70% 85% at 88% 110%, var(--glow-c), transparent 66%)"></div>
     <svg width="100%" height="100%" style="display:block; opacity:.06; mask-image:linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent); -webkit-mask-image:linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent)"><defs><pattern id="pat-sobre" width="72" height="72" patternUnits="userSpaceOnUse"><g style="stroke:var(--accent)" stroke-width="1.1"><path d="M36 28v16"></path><path d="M28 36h16"></path></g></pattern></defs><rect width="100%" height="100%" fill="url(#pat-sobre)"></rect></svg>
   </div>
-  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.aboutEyebrow }}</span>
-  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.aboutTitle }} <span style="color:var(--accent)">{{ t.aboutTitleAccent }}</span></h2>
+  <span data-reveal="" style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.aboutEyebrow }}</span>
+  <h2 data-reveal="" style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.aboutTitle }} <span style="color:var(--accent)">{{ t.aboutTitleAccent }}</span></h2>
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: clamp(28px,4vw,48px); align-items: center; position: relative">
-    <div style="justify-self: center; position: relative; width: 405px; aspect-ratio: 1; display: grid; place-items: center; height: 405px">
+    <div style="justify-self: center; position: relative; width: min(405px, 100%); aspect-ratio: 1; display: grid; place-items: center; height: auto">
       
     </div>
     <div style="min-width:0">
@@ -314,9 +315,9 @@
 </section>
 
 <section style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px; min-height:100svh; display:flex; flex-direction:column; justify-content:center">
-  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.skillsEyebrow }}</span>
-  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.skillsTitle }} <span style="color:var(--accent)">{{ t.skillsTitleAccent }}</span></h2>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:clamp(28px,4vw,48px); align-items:start">
+  <span data-reveal="" style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.skillsEyebrow }}</span>
+  <h2 data-reveal="" style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.skillsTitle }} <span style="color:var(--accent)">{{ t.skillsTitleAccent }}</span></h2>
+  <div data-reveal-children="" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:clamp(28px,4vw,48px); align-items:start">
     <p style="color:var(--ink3); font-size:15.5px; margin:0; text-wrap:pretty">{{ t.skillsBody }}</p>
     <ul style="display:flex; flex-wrap:wrap; gap:10px; list-style:none; margin:0; padding:0">
       <li style="padding:9px 16px; border-radius:999px; background:var(--surface); border:1px solid var(--line); font-size:13.5px; font-weight:600; transition:all .2s ease" style-hover="border-color:var(--accent); color:var(--accent); transform:translateY(-2px)">Java 17</li>
@@ -347,14 +348,46 @@
   </div>
 </section>
 
+<section id="certificados" style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px; min-height:100svh; display:flex; flex-direction:column; justify-content:center">
+  <div aria-hidden="true" style="position:absolute; z-index:-1; top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%); background:var(--bg3); overflow:hidden">
+    <div style="position:absolute; inset:0; background:radial-gradient(72% 88% at 85% -10%, var(--glow-c), transparent 68%)"></div>
+  </div>
+  <span data-reveal="" style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.certEyebrow }}</span>
+  <h2 data-reveal="" style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 14px">{{ t.certTitle }} <span style="color:var(--accent)">{{ t.certTitleAccent }}</span></h2>
+  <p data-reveal="" style="max-width:58ch; margin:0 auto 44px; text-align:center; color:var(--ink3); font-size:15.5px; text-wrap:pretty">{{ t.certBody }}</p>
+  <ul data-reveal-children="" style="list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px">
+    <sc-for list="{{ certs }}" as="c" hint-placeholder-count="3">
+      <li style="display:flex; flex-direction:column; gap:14px; padding:24px; background:var(--surface); border:1px solid var(--line); border-radius:14px; transition:transform .22s ease, border-color .2s ease" style-hover="transform:translateY(-4px); border-color:var(--accent)">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+          <span style="display:flex; align-items:center; gap:9px; font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--accent)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path></svg>
+            {{ c.issuer }}
+          </span>
+          <span style="font-size:12.5px; color:var(--muted)">{{ c.date }}</span>
+        </div>
+        <h3 style="margin:0; font-size:16.5px; font-weight:700; line-height:1.35; color:var(--ink); text-wrap:pretty">{{ c.title }}</h3>
+        <p style="margin:0; font-size:13.5px; color:var(--ink4); text-wrap:pretty">{{ c.instructor }}</p>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:auto; padding-top:4px">
+          <span style="padding:5px 11px; border-radius:999px; border:1px solid var(--ring); font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:600; color:var(--accent)">{{ c.hours }}</span>
+          <span style="padding:5px 11px; border-radius:999px; background:var(--chip); font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--ink4)">{{ t.certCode }} {{ c.code }}</span>
+        </div>
+        <a href="{{ c.file }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--accent); align-self:flex-start; border-bottom:1px solid transparent; transition:border-color .18s ease" style-hover="border-color:var(--accent)">
+          {{ t.certOpen }}
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+        </a>
+      </li>
+    </sc-for>
+  </ul>
+</section>
+
 <section id="contato" style="position:relative; max-width:1100px; margin:0 auto; padding:clamp(48px,7vw,80px) 24px clamp(56px,8vw,96px); min-height:100svh; display:flex; flex-direction:column; justify-content:center">
   <div aria-hidden="true" style="position:absolute; z-index:-1; top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%); background:var(--bg2); overflow:hidden">
     <div style="position:absolute; inset:0; background:radial-gradient(70% 90% at 20% 110%, var(--glow-c), transparent 68%)"></div>
     <svg width="100%" height="100%" style="display:block; opacity:.055; mask-image:linear-gradient(to bottom, transparent, #000 36%, #000 64%, transparent); -webkit-mask-image:linear-gradient(to bottom, transparent, #000 36%, #000 64%, transparent)"><defs><pattern id="pat-contato" width="210" height="210" patternUnits="userSpaceOnUse"><g fill="none" style="stroke:var(--accent)" stroke-width="1.2" stroke-linejoin="round"><rect x="34" y="44" width="52" height="34"></rect><path d="M34 47l26 19 26-19"></path><circle cx="156" cy="150" r="2.2"></circle></g></pattern></defs><rect width="100%" height="100%" fill="url(#pat-contato)"></rect></svg>
   </div>
-  <span style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.contactEyebrow }}</span>
-  <h2 style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.contactTitle }} <span style="color:var(--accent)">{{ t.contactTitleAccent }}</span></h2>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:clamp(28px,4vw,44px); align-items:start">
+  <span data-reveal="" style="display:block; text-align:center; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px">{{ t.contactEyebrow }}</span>
+  <h2 data-reveal="" style="text-align:center; font-size:clamp(26px,4vw,36px); font-weight:700; letter-spacing:-.02em; margin:0 0 44px">{{ t.contactTitle }} <span style="color:var(--accent)">{{ t.contactTitleAccent }}</span></h2>
+  <div data-reveal-children="" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:clamp(28px,4vw,44px); align-items:start">
     <div>
       <p style="display:inline-flex; align-items:center; gap:8px; margin:0 0 14px; font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent)">
         <span style="width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px var(--glow-c)"></span>
@@ -453,7 +486,7 @@ const DICT = {
   pt: {
     skip: "Ir para o conteúdo",
     navLabel: "Navegação principal", langLabel: "Idioma",
-    navHome: "Início", navWork: "Projetos", navArq: "Arquitetura", navAbout: "Sobre", navContact: "Contato",
+    navHome: "Início", navWork: "Projetos", navArq: "Arquitetura", navAbout: "Sobre", navCerts: "Certificados", navContact: "Contato",
     stRepos: "Repositórios", stStars: "Estrelas", stLang: "Linguagem principal", stPushed: "Último push",
     liveGithub: "Dados ao vivo do GitHub",
     cv: "Baixar CV",
@@ -468,6 +501,9 @@ const DICT = {
     do3Body: "Monitoramento com Prometheus e Grafana, testes com JUnit5/Mockito e Clean Code.",
     projEyebrow: "Meu trabalho", projTitle: "Projetos em", projTitleAccent: "destaque.",
     repoLink: "Ver repositório", allRepos: "Ver todos os repositórios no GitHub",
+    certEyebrow: "Formação contínua", certTitle: "Cursos e", certTitleAccent: "certificados.",
+    certBody: "Certificados de conclusão emitidos pelas plataformas, com carga horária e código de verificação.",
+    certOpen: "Abrir certificado", certCode: "Código",
     arqEyebrow: "Estudo de caso · Api_CRM", arqTitle: "Arquitetura em", arqTitleAccent: "camadas.",
     arqBody: "O core do Api_CRM é o fluxo de vendas. A venda atravessa uma máquina de estados com validação de estoque em dois momentos e lock de banco na finalização, para que dois vendedores não vendam o mesmo último item.",
     arqFlowTitle: "Fluxo da venda", arqLayersTitle: "Pacotes do domínio",
@@ -496,7 +532,7 @@ const DICT = {
   en: {
     skip: "Skip to content",
     navLabel: "Main navigation", langLabel: "Language",
-    navHome: "Home", navWork: "Projects", navArq: "Architecture", navAbout: "About", navContact: "Contact",
+    navHome: "Home", navWork: "Projects", navArq: "Architecture", navAbout: "About", navCerts: "Certificates", navContact: "Contact",
     stRepos: "Repositories", stStars: "Stars", stLang: "Main language", stPushed: "Last push",
     liveGithub: "Live data from GitHub",
     cv: "Download CV",
@@ -511,6 +547,9 @@ const DICT = {
     do3Body: "Monitoring with Prometheus and Grafana, testing with JUnit 5 / Mockito, and Clean Code.",
     projEyebrow: "My work", projTitle: "Featured", projTitleAccent: "projects.",
     repoLink: "View repository", allRepos: "See all repositories on GitHub",
+    certEyebrow: "Continuous learning", certTitle: "Courses and", certTitleAccent: "certificates.",
+    certBody: "Completion certificates issued by the platforms, with total hours and verification code.",
+    certOpen: "Open certificate", certCode: "Code",
     arqEyebrow: "Case study · Api_CRM", arqTitle: "Layered", arqTitleAccent: "architecture.",
     arqBody: "The core of Api_CRM is the sales flow. A sale moves through a state machine with stock validation at two points and a database lock on completion, so two sellers can't sell the same last item.",
     arqFlowTitle: "Sale flow", arqLayersTitle: "Domain packages",
@@ -536,6 +575,25 @@ const DICT = {
     themeLight: "Light theme", themeDark: "Dark theme",
     footer: "© 2026 Helen Cristina Batista · Back-End Developer · Java & Spring Boot"
   }
+};
+
+const CERTS = {
+  pt: [
+    { issuer: "Udemy", title: "Java COMPLETO: Do Zero ao Profissional + Projetos!", instructor: "Leonardo Moura Leitao · Cod3r Cursos Online",
+      hours: "77 horas", date: "Fevereiro de 2026", code: "UC-2e52e71f", file: "certificados/udemy-java-completo.pdf" },
+    { issuer: "DIO · Vivo", title: "Bootcamp Python AI Backend Developer", instructor: "Digital Innovation One",
+      hours: "67 horas", date: "Julho de 2024", code: "WVQWTYHC", file: "certificados/dio-python-ai-backend.pdf" },
+    { issuer: "Udemy", title: "Curso completo de Lógica de Programação e Algoritmos", instructor: "Becode · Alex de Araujo Vieira",
+      hours: "2,5 horas", date: "Julho de 2022", code: "UC-9c09bb81", file: "certificados/udemy-logica-programacao.pdf" }
+  ],
+  en: [
+    { issuer: "Udemy", title: "Java COMPLETO: Do Zero ao Profissional + Projetos!", instructor: "Leonardo Moura Leitao · Cod3r Cursos Online",
+      hours: "77 hours", date: "February 2026", code: "UC-2e52e71f", file: "certificados/udemy-java-completo.pdf" },
+    { issuer: "DIO · Vivo", title: "Python AI Backend Developer bootcamp", instructor: "Digital Innovation One",
+      hours: "67 hours", date: "July 2024", code: "WVQWTYHC", file: "certificados/dio-python-ai-backend.pdf" },
+    { issuer: "Udemy", title: "Curso completo de Lógica de Programação e Algoritmos", instructor: "Becode · Alex de Araujo Vieira",
+      hours: "2.5 hours", date: "July 2022", code: "UC-9c09bb81", file: "certificados/udemy-logica-programacao.pdf" }
+  ]
 };
 
 const PROJECTS = {
@@ -640,7 +698,7 @@ class Component extends DCLogic {
   trackScroll() {
     if (this._scrollBound) return;
     this._scrollBound = true;
-    const ids = ["home", "projetos", "arquitetura", "sobre", "contato"];
+    const ids = ["home", "projetos", "arquitetura", "sobre", "certificados", "contato"];
     const onScroll = () => {
       if (this._raf) return;
       this._raf = requestAnimationFrame(() => {
@@ -664,21 +722,37 @@ class Component extends DCLogic {
   loadGitHub() {
     if (this._ghLoaded) return;
     this._ghLoaded = true;
-    Promise.all([
-      fetch("https://api.github.com/users/Helencb").then(r => r.ok ? r.json() : null),
-      fetch("https://api.github.com/users/Helencb/repos?per_page=100&sort=pushed").then(r => r.ok ? r.json() : null)
-    ]).then(([user, repos]) => {
-      if (!user || !Array.isArray(repos)) return;
-      const stars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
-      const langs = {};
-      repos.forEach(r => { if (r.language) langs[r.language] = (langs[r.language] || 0) + 1; });
-      const topLang = Object.keys(langs).sort((a, b) => langs[b] - langs[a])[0] || null;
-      const pushed = repos.map(r => r.pushed_at).filter(Boolean).sort().pop();
-      this.setState({ gh: {
-        repos: user.public_repos != null ? user.public_repos : repos.length,
-        stars: stars, lang: topLang, pushed: pushed
-      } });
-    }).catch(() => { /* strip stays hidden */ });
+    const KEY = "helen-portfolio-gh";
+    const TTL = 15 * 60 * 1000;
+    try {
+      const cached = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (cached && cached.gh) {
+        this.setState({ gh: cached.gh });
+        if (cached.at && Date.now() - cached.at < TTL) return;
+      }
+    } catch (err) { /* ignore */ }
+    fetch("https://api.github.com/users/Helencb/repos?per_page=100&sort=pushed")
+      .then(r => r.ok ? r.json() : null)
+      .then(repos => {
+        if (!Array.isArray(repos) || !repos.length) return;
+        const langs = {}, byName = {};
+        let stars = 0;
+        repos.forEach(r => {
+          stars += r.stargazers_count || 0;
+          byName[String(r.name).toLowerCase()] = r.stargazers_count || 0;
+          if (r.language) langs[r.language] = (langs[r.language] || 0) + 1;
+        });
+        const gh = {
+          repos: repos.length,
+          stars: stars,
+          lang: Object.keys(langs).sort((a, b) => langs[b] - langs[a])[0] || null,
+          pushed: repos.map(r => r.pushed_at).filter(Boolean).sort().pop(),
+          byName: byName
+        };
+        this.setState({ gh: gh });
+        try { localStorage.setItem(KEY, JSON.stringify({ at: Date.now(), gh: gh })); } catch (err) { /* ignore */ }
+      })
+      .catch(() => { /* strip stays hidden */ });
   }
 
   applyTheme(theme) {
@@ -726,10 +800,44 @@ class Component extends DCLogic {
     this.startTyping();
     this.trackScroll();
     this.trackPointer();
+    this.initReveal();
     if (typeof document !== "undefined") {
       document.documentElement.lang = this.currentLang() === "en" ? "en" : "pt-BR";
       document.title = "Helen Cristina Batista · Desenvolvedora Back-End";
     }
+  }
+
+  initReveal() {
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const targets = [];
+    document.querySelectorAll("[data-reveal]").forEach(el => targets.push({ el: el, delay: 0 }));
+    document.querySelectorAll("[data-reveal-children]").forEach(group => {
+      Array.prototype.forEach.call(group.children, (child, i) => {
+        targets.push({ el: child, delay: Math.min(i, 8) * 0.07 });
+      });
+    });
+    if (!targets.length) return;
+    const EASE = "cubic-bezier(.22,.61,.36,1)";
+    targets.forEach(tg => {
+      tg.el.style.opacity = "0";
+      tg.el.style.transform = "translateY(18px)";
+      tg.el.style.willChange = "opacity, transform";
+      tg.el._revealDelay = tg.delay;
+    });
+    this._io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const d = el._revealDelay || 0;
+        el.style.transition = "opacity .68s " + EASE + " " + d + "s, transform .68s " + EASE + " " + d + "s";
+        el.style.opacity = "1";
+        el.style.transform = "none";
+        this._io.unobserve(el);
+        setTimeout(() => { el.style.willChange = ""; el.style.transition = ""; }, (d + 0.8) * 1000);
+      });
+    }, { rootMargin: "0px 0px -10% 0px", threshold: 0.1 });
+    targets.forEach(tg => this._io.observe(tg.el));
   }
 
   langBtnStyle(active) {
@@ -744,6 +852,7 @@ class Component extends DCLogic {
     if (this._onScroll) window.removeEventListener("scroll", this._onScroll);
     if (this._onMove) window.removeEventListener("pointermove", this._onMove);
     if (this._onLeave) document.removeEventListener("mouseleave", this._onLeave);
+    if (this._io) this._io.disconnect();
   }
 
   copyEmail() {
@@ -810,7 +919,12 @@ class Component extends DCLogic {
     if (!this._ghLoaded) setTimeout(() => this.loadGitHub(), 0);
     const lang = this.currentLang();
     const t = DICT[lang];
-    const projects = PROJECTS[lang].map(p => Object.assign({}, p, { starsLabel: p.stars + " " + t.stars }));
+    const byName = this.state.gh && this.state.gh.byName ? this.state.gh.byName : null;
+    const projects = PROJECTS[lang].map(p => {
+      const live = byName ? byName[p.name.toLowerCase()] : undefined;
+      const stars = live != null ? live : p.stars;
+      return Object.assign({}, p, { stars: stars, starsLabel: stars + " " + t.stars });
+    });
     return {
       t: t,
       typedName: NAME.slice(0, this.state.typed),
@@ -833,6 +947,7 @@ class Component extends DCLogic {
       navWorkStyle: this.navStyle("projetos"),
       navArqStyle: this.navStyle("arquitetura"),
       navAboutStyle: this.navStyle("sobre"),
+      navCertsStyle: this.navStyle("certificados"),
       navContactStyle: this.navStyle("contato"),
       toTop: () => window.scrollTo({ top: 0, behavior: "smooth" }),
       toTopStyle: "position:fixed; right:22px; bottom:22px; z-index:120; width:46px; height:46px;" +
@@ -842,6 +957,7 @@ class Component extends DCLogic {
         " opacity:" + (this.state.scrolled ? "1" : "0") +
         "; pointer-events:" + (this.state.scrolled ? "auto" : "none"),
       projects: projects,
+      certs: CERTS[lang],
       flow: FLOW[lang],
       layers: LAYERS[lang],
       hasStats: !!this.state.gh,
